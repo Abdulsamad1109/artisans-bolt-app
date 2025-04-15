@@ -1,7 +1,11 @@
 export const userValidationShema = {
-    fullName: {
+    firstName: {
         isString: true,
-        notEmpty: { errorMessage: "fullname cannot be empty" }
+        notEmpty: { errorMessage: "firstname cannot be empty" }
+    },
+    lastName: {
+        isString: true,
+        notEmpty: { errorMessage: "lastname cannot be empty" }
     },
     email: {
         isEmail: true,

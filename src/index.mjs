@@ -15,13 +15,13 @@ const cookieParserSecret = process.env.COOKIE_PARSER_SECRET
 const sessionSecret = process.env.SESSION_SECRET
 
 // mongoose connection
-// connect(uri)
-// .then(res=>{
-//     console.log("connected to database")
-// })
-// .catch (err=>{
-//     console.log("connection failed")
-// })
+connect(uri)
+.then(res=>{
+    console.log("connected to database")
+})
+.catch (err=>{
+    console.log("connection failed")
+})
 
 
 app.use(express.json())
@@ -52,7 +52,7 @@ app.get("/", (request,response)=>{
 })
 
 app.post('/api/auth', passport.authenticate('local'), (request, response) => {
-    
+
 })
 
 

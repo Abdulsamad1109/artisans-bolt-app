@@ -18,7 +18,7 @@ passport.deserializeUser((id, done) => {
         if(!findUser) throw new Error('user not found')
             done(null, findUser)
     } catch (error) {
-        done(error, nul)
+        done(error, null)
     }
 })
 
