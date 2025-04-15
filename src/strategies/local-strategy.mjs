@@ -1,6 +1,5 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import { users } from "../utils/database.mjs";
 
 
 passport.serializeUser((user, done) => {

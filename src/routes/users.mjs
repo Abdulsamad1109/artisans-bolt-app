@@ -2,7 +2,6 @@ import { request, response, Router } from "express";
 import { validationResult,matchedData,checkSchema } from "express-validator";
 import { userValidationShema } from "../utils/validationShema.mjs";
 import { hashpassword } from "../utils/hashPassword.mjs"; 
-// import { users } from "../utils/database.mjs";
 import passport from "passport";
 import { User } from "../models/users_schema.mjs";
 
