@@ -3,6 +3,7 @@ import { validationResult,matchedData,checkSchema } from "express-validator";
 import { userValidationShema } from "../utils/validationShema.mjs";
 import { hashpassword } from "../utils/hashPassword.mjs"; 
 import { users } from "../utils/database.mjs";
+import passport from "passport";
 
 
 const router = Router()
@@ -10,7 +11,7 @@ const router = Router()
 
 
 // registration endpoint for users
-router.post(("/api/users/register"), checkSchema(userValidationShema),(request, response)=>{
+router.post(("/api/users/register"), checkSchema(userValidationShema),(request, response) => {
     try {
         
         const result = validationResult(request)
@@ -28,26 +29,16 @@ router.post(("/api/users/register"), checkSchema(userValidationShema),(request, 
 })
 
 
-router.get("/api/users", (request,response)=>{
-    // console.log(request.session);
-    console.log(request.sessionID);
-    request.sessionStore.get(request.session.id, (err, sessionData ) =>{
-        if(err){
-            console.log(err);
-            throw err;
-        }
-        console.log(sessionData);
-    })
-    
-    let allUsers = users.map(user=> user.fullName)
-    response.send(allUsers)
+router.get("/api/auth/status", (request,response) => {
+
+    return request.user ? response.send(request.user) :response.sendStatus(401)
     
 })
 
 
 // users log in endpoint 
-router.post("/api/users/login", (request, response) =>{
-
+router.post("/api/users/login", passport.authenticate('local'), (request, response) => {
+    response.status(200).send("logged in sucessfully")
 })
 
 

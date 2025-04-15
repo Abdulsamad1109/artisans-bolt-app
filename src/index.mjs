@@ -43,7 +43,6 @@ app.use(passport.session())
 
 
 app.use(allRoutes) 
-const PORT = process.env.PORT || 4000
 
 
 app.get("/", (request,response)=>{
@@ -52,6 +51,12 @@ app.get("/", (request,response)=>{
     response.status(201).send("Hello World!")
 })
 
+app.post('/api/auth', passport.authenticate('local'), (request, response) => {
+    
+})
+
+
+const PORT = process.env.PORT || 4000
 
 app.listen(PORT, ()=>{
     console.log(`Running on port ${PORT}`);
