@@ -52,7 +52,7 @@ app.get("/", (request,response)=>{
 })
 
 app.post('/api/auth', passport.authenticate('local'), (request, response) => {
-
+    
 })
 
 

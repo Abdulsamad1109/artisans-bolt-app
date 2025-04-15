@@ -1,19 +1,18 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
+import { User } from "../models/users_schema.mjs";
+import { comparePassword } from "../utils/hashPassword.mjs";
 
 
 passport.serializeUser((user, done) => {
-    console.log(`inside serializing`);
-    console.log(user);
-    
+
     done(null, user.id)
 })
 
-passport.deserializeUser((id, done) => {
-    console.log(`deserializing ${id}`);
+passport.deserializeUser( async (id, done) => {
     
     try {
-        const findUser = users.find((user) => user.id === id)
+        const findUser = await User.findById(id)
         if(!findUser) throw new Error('user not found')
             done(null, findUser)
     } catch (error) {
@@ -22,13 +21,15 @@ passport.deserializeUser((id, done) => {
 })
 
 export default passport.use(
-    new Strategy({usernameField: "email"}, (email, password, done) => {
-        console.log(`email : ${email}`)
-        console.log(`password : ${password}`)
+    new Strategy({usernameField: "email"}, async (email, password, done) => {
+
         try {
-            const findUser = users.find((user) => user.email === email)
+            // this checks for the correct user details
+            const findUser = await User.findOne({ email })
             if(!findUser) throw Error("user not found")
-            if(findUser.password !== password)
+
+            // it compares the password with the hashed password in the DB 
+            if(!comparePassword(password, findUser.password))
               throw Error("invalid details")
             done(null, findUser)
         } catch (error) {

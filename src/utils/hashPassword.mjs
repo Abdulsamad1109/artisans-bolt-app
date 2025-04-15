@@ -6,6 +6,6 @@ export const hashpassword = (password) => {
     return bcrypt.hashSync(password, salt)
 }
 
-export const comparePassword = (plain, hash) =>{
-    bcrypt.compareSync(password)
+export const comparePassword = (plain, hashed) =>{
+    return bcrypt.compareSync(plain, hashed)
 }
