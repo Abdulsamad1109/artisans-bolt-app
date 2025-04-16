@@ -4,10 +4,10 @@ import { userValidationShema } from "../utils/validationShema.mjs";
 import { hashpassword } from "../utils/hashPassword.mjs"; 
 import passport from "passport";
 import { User } from "../models/users_schema.mjs";
+import { authenticateUser } from "../utils/userAuthentication.mjs";
 
 
 const router = Router();
-
 
 
 // registration endpoint for users
@@ -42,6 +42,7 @@ router.post("/api/users/login", passport.authenticate('local'), (request, respon
     response.status(200).send("logged in sucessfully");
 });
 
+
 // users logout endpoint
 router.post('/api/users/logout', (request,response) => {
     if(!request.user) return response.sendStatus(401);
@@ -50,5 +51,13 @@ router.post('/api/users/logout', (request,response) => {
         response.send(200);
     });
 });
+
+
+
+router.get("/api/users/profile", authenticateUser, (request, response) => {
+    console.log(request.user.firstName)
+    response.status(200).send(request.user)
+})
+
 
 export default router

@@ -27,6 +27,7 @@ connect(uri)
 
 app.use(express.json())
 app.use(cookieParser(cookieParserSecret))
+
 app.use(session(
     {
         secret: sessionSecret,
@@ -51,22 +52,10 @@ app.use(allRoutes)
 
 app.get("/", (request,response)=>{
     request.session.visited = true
-    response.cookie("samad","boy", {maxAge: 60000*2, signed: true})
+    response.cookie("samad","boy", {maxAge: 60000 * 10, signed: true})
     response.status(201).send("Hello World!")
 })
 
-
-app.get("/api/auth/status", (request,response) => {
-    if(!request.user) return response.sendStatus(401)
-
-    // convert mongoose document to plain-js obj
-    const userObj = request.user.toObject()
-    
-    // excluded the user password before send to the client
-    const {password, ...userWithoutPassword} = userObj
-    return response.status(200).send(userWithoutPassword)
-    
-})
 
 
 const PORT = process.env.PORT || 4000
