@@ -33,13 +33,22 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
         return response.sendStatus(400);
     }
   
-})
+});
 
 
-// users log in endpoint 
+// users login endpoint 
 router.post("/api/users/login", passport.authenticate('local'), (request, response) => {
-    response.status(200).send("logged in sucessfully");
-})
 
+    response.status(200).send("logged in sucessfully");
+});
+
+// users logout endpoint
+router.post('/api/users/logout', (request,response) => {
+    if(!request.user) return response.sendStatus(401);
+    request.logout((err) => {
+        if(err) return response.sendStatus(400);
+        response.send(200);
+    });
+});
 
 export default router

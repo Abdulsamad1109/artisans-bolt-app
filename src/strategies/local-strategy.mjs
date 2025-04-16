@@ -5,8 +5,6 @@ import { comparePassword } from "../utils/hashPassword.mjs";
 
 
 passport.serializeUser((user, done) => {
-    console.log("inside serialize user");
-    console.log(user);
     done(null, user.id)
 })
 
@@ -17,7 +15,7 @@ passport.deserializeUser( async (id, done) => {
         if(!findUser) throw new Error('user not found')
             done(null, findUser)
     } catch (error) {
-        done(error, null)
+        done(error, null) 
     }
 })
 

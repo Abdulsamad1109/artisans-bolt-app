@@ -55,9 +55,6 @@ app.get("/", (request,response)=>{
     response.status(201).send("Hello World!")
 })
 
-app.post('/api/auth', passport.authenticate('local'), (request, response) => {
-
-})
 
 app.get("/api/auth/status", (request,response) => {
     if(!request.user) return response.sendStatus(401)
