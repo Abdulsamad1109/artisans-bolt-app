@@ -5,7 +5,8 @@ import { comparePassword } from "../utils/hashPassword.mjs";
 
 
 passport.serializeUser((user, done) => {
-
+    console.log("inside serialize user");
+    console.log(user);
     done(null, user.id)
 })
 
@@ -24,11 +25,11 @@ export default passport.use(
     new Strategy({usernameField: "email"}, async (email, password, done) => {
 
         try {
-            // this checks for the correct user details
+            // checking if the email is available in the DB
             const findUser = await User.findOne({ email })
             if(!findUser) throw Error("user not found")
 
-            // it compares the password with the hashed password in the DB 
+            // comparing the password with the hashed password in the DB 
             if(!comparePassword(password, findUser.password))
               throw Error("invalid details")
             done(null, findUser)

@@ -36,13 +36,6 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
 })
 
 
-router.get("/api/auth/status", (request,response) => {
-
-    return request.user ? response.send(request.user) :response.sendStatus(401);
-    
-})
-
-
 // users log in endpoint 
 router.post("/api/users/login", passport.authenticate('local'), (request, response) => {
     response.status(200).send("logged in sucessfully");

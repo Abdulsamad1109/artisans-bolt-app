@@ -1,5 +1,6 @@
 import express, { request, response } from "express";
-import {connect} from "mongoose";
+import mongoose, {connect} from "mongoose";
+import MongoStore from "connect-mongo";
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -32,8 +33,11 @@ app.use(session(
         saveUninitialized: false,
         resave: false,
         cookie: {
-            maxAge : 60000*2
-        }
+            maxAge : 60000 * 5
+        },
+        store: MongoStore.create({
+            client: mongoose.connection.getClient()
+        })
     }
 ))
 
@@ -52,6 +56,18 @@ app.get("/", (request,response)=>{
 })
 
 app.post('/api/auth', passport.authenticate('local'), (request, response) => {
+
+})
+
+app.get("/api/auth/status", (request,response) => {
+    if(!request.user) return response.sendStatus(401)
+
+    // convert mongoose document to plain-js obj
+    const userObj = request.user.toObject()
+    
+    // excluded the user password before send to the client
+    const {password, ...userWithoutPassword} = userObj
+    return response.status(200).send(userWithoutPassword)
     
 })
 
