@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Service } from "../models/services.mjs";
+import { Service } from "../models/services_schema.mjs";
 
 const router = Router();
 
@@ -9,13 +9,13 @@ router.post("/api/services", async (request, response) => {
     try {
         const {type} = request.body
         console.log({type});
-        const newService = new Service({type})
-        const savedService = await newService.save()
+        const newService = new Service({type});
+        const savedService = await newService.save();
     
-        response.status(201).send(savedService)
+        response.status(201).send(savedService);
     } catch (error) {
-        console.log("fail to add service", error)
-        response.sendStatus(400)
+        console.log("fail to add service", error);
+        response.sendStatus(400);
     }
 
 });
@@ -27,13 +27,13 @@ router.get("/api/services", async (request, response) => {
         const services = await Service.find().select("type -_id")
 
         // map all the services into an array
-        const servicesTypes = services.map((service) => service.type)
+        const servicesTypes = services.map((service) => service.type);
         response.status(200).send(servicesTypes);
 
     } catch (error) {
         console.log("fail to fetch all service types", error);
         response.sendStatus(500)
     }
-})
+});
 
-export default router
+export default router;

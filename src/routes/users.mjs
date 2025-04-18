@@ -55,9 +55,9 @@ router.post('/api/users/logout', (request,response) => {
 
 
 router.get("/api/users/profile", authenticateUser, (request, response) => {
-    console.log(request.user.firstName)
-    response.status(200).send(request.user)
-})
+    console.log(request.user.id);
+    response.status(200).send(request.user);
+});
 
 
 export default router

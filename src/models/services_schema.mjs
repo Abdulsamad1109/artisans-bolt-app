@@ -6,6 +6,7 @@ const serviceSchema = new Schema({
         type: String,
         required: true,
     },
+    user: {type: Schema.Types.ObjectId}
 
 })
 
