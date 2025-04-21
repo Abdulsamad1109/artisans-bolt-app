@@ -1,17 +1,16 @@
 import { Schema,  model } from "mongoose";
-import { User } from "./users_schema.mjs";
-import { Service } from "./services_schema.mjs";
+
 
 const bookingSchema = new Schema({
     service: { 
         type: Schema.Types.ObjectId,
-        ref: Service,
+        ref: "Service",
         required: true
     },
 
     user: {
         type: Schema.Types.ObjectId,
-        ref: User,
+        ref: "User",
         required: true
     },
 
@@ -20,7 +19,7 @@ const bookingSchema = new Schema({
         required: true
     },
 
-    descriptoin: {
+    summary: {
         type: String,
         required: true
     },
@@ -31,14 +30,18 @@ const bookingSchema = new Schema({
     },
 
     date: {
-        type: Date,
+        type: String,
         required: true
     },
 
     time: {
-        type: Date.now,
+        type: String,
         required: true
-    } 
+    },
+
+    status: {
+        type: String
+    }
 })
 
 export const Booking = model("Booking", bookingSchema)
