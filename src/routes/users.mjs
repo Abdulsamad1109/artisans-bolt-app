@@ -24,9 +24,9 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
         if(findUser) return response.send("email already exist");
         console.log(data)
         // This saves a new user to the database if the email doesn't already exist
-        // const newUser = new User(data);
-        // const savedUser = await newUser.save();
-        // return response.status(201).send(savedUser);
+        const newUser = new User(data);
+        const savedUser = await newUser.save();
+        return response.status(201).send(savedUser);
 
     } catch (error) {
         console.log("registration failed", error);

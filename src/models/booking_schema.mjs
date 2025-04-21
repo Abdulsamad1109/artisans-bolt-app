@@ -12,7 +12,7 @@ const bookingSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: User,
-        required: true,
+        required: true
     },
 
     address: {
@@ -22,21 +22,22 @@ const bookingSchema = new Schema({
 
     descriptoin: {
         type: String,
-        required: true,
+        required: true
     },
 
     price: {
         type: String,
-        required: true,
+        required: true
     },
 
     date: {
-        type: Date
+        type: Date,
+        required: true
     },
 
     time: {
         type: Date.now,
-        required: true,
+        required: true
     } 
 })
 
