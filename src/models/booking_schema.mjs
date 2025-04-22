@@ -3,8 +3,7 @@ import { Schema,  model } from "mongoose";
 
 const bookingSchema = new Schema({
     service: { 
-        type: Schema.Types.ObjectId,
-        ref: "Service",
+        type: String,
         required: true
     },
 
