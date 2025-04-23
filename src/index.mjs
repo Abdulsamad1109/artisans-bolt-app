@@ -37,7 +37,7 @@ app.use(session(
             maxAge : 60000 * 60
         },
         store: MongoStore.create({
-            client: mongoose.connection.getClient()
+            mongoUri: uri
         })
     }
 ))
