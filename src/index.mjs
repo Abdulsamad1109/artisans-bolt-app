@@ -11,6 +11,8 @@ import './strategies/local-strategy.mjs';
 const app = express();
 
 dotenv.config();
+
+
 const uri = process.env.URI
 const cookieParserSecret = process.env.COOKIE_PARSER_SECRET
 const sessionSecret = process.env.SESSION_SECRET

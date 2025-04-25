@@ -50,4 +50,4 @@ router.get("/api/booking", authenticateUser, async (request, response) => {
 
 
 
-export default router
+export default router;
