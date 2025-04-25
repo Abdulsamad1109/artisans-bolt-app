@@ -58,7 +58,7 @@ mongoose.connect(uri)
     app.get("/", (request,response)=>{
         request.session.visited = true
         response.cookie("samad","boy", {maxAge: 60000 * 60, signed: true})
-        response.status(201).send("Hello World!")
+        response.status(201).send("Welcome to artisan-bolt-app API")
     });
 
     
