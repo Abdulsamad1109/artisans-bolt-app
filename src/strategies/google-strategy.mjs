@@ -27,7 +27,7 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
 
         // find user by email
         const emailFromGoogle = profile.emails[0].value;
-        findUser = await User.findOne({ email });
+        findUser = await User.findOne({ email: emailFromGoogle });
 
         // If user exists by email, link the Google account
         if(findUser) {
