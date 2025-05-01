@@ -17,7 +17,8 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
-
+        console.log(profile);
+        
         let findUser;
         // find user by google ID
         findUser = await User.findOne({ googleId: profile.id });
@@ -25,7 +26,7 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
             return done(null, findUser);
 
         // find user by email
-        const email = profile.emails[0].value;
+        const emailFromGoogle = profile.emails[0].value;
         findUser = await User.findOne({ email });
 
         // If user exists by email, link the Google account
@@ -39,9 +40,11 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
         // If no user found, create new Google account
         const newUser = new User({
             googleId: profile.id,
-            email: email,
-            name: profile.id
+            email: emailFromGoogle,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName
         });
+
         await newUser.save();
         return done(null, newUser);
 
