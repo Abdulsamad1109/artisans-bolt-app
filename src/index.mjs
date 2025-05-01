@@ -65,6 +65,7 @@ mongoose.connect(uri)
         );
 
 
+
     app.get("/", (request,response)=>{
         request.session.visited = true
         response.status(201).send("Welcome to artisan-bolt-app API")

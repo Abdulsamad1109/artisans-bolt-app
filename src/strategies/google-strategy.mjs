@@ -41,8 +41,6 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
         const newUser = new User({
             googleId: profile.id,
             email: emailFromGoogle,
-            firstName: profile.name.givenName,
-            lastName: profile.name.familyName
         });
 
         await newUser.save();

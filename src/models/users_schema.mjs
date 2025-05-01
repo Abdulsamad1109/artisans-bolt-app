@@ -16,8 +16,7 @@ const userSchema = new Schema({
     },
 
     phoneNumber: {
-        type: String,
-        unique: true
+        type: String
     },
 
     password: {
@@ -27,6 +26,14 @@ const userSchema = new Schema({
     googleId: {
         type: String,
         unique: true
+    },
+
+    address: {
+        type: String
+    },
+
+    gender: {
+        type: String
     }
     
 })

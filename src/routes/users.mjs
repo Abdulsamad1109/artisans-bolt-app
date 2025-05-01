@@ -56,6 +56,30 @@ router.post('/api/users/logout', (request,response) => {
 
 router.get("/api/users/profile", authenticateUser, (request, response) => {
     response.status(200).send(request.user);
+
+});
+
+
+router.post('/api/users/update-profile', authenticateUser, async (request,response) => {
+    const {firstName, lastName, phoneNumber, gender, address} = request.body;
+    let userId = request.user.id;
+    try {
+        // find by user ID and update
+        const updatedUser = await User.findOneAndUpdate(
+            {_id: userId},
+            {$set: {firstName, lastName, phoneNumber, gender, address}},
+            {new: true}
+        );
+
+        // save updated the fields
+        let savedUser = await updatedUser.save();
+        response.status(200).send(savedUser);
+
+    } catch (err) {
+        console.log("failed to update user profile", err);
+        
+    }
+
 });
 
 
