@@ -7,11 +7,11 @@ import allRoutes from './routes/index.mjs';
 import passport from "passport";
 import './strategies/local-strategy.mjs';
 import './strategies/google-strategy.mjs'
+import { generateOtp } from "./utils/generate-otp.mjs";
 
 const app = express();
 
 dotenv.config();
-
 
 const uri = process.env.URI
 
