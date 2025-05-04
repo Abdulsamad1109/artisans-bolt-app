@@ -5,7 +5,9 @@ import { hashpassword } from "../utils/hashPassword.mjs";
 import passport from "passport";
 import { User } from "../models/users_schema.mjs";
 import { authenticateUser } from "../utils/userAuthentication.mjs";
-import {userVerificaton} from "../utils/email-verification.mjs"
+import nodemailer from "nodemailer"
+import {transporter} from "../utils/email-verification.mjs"
+import { generateOtp } from "../utils/generate-otp.mjs";
 
 
 const router = Router();
@@ -24,10 +26,9 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
         // To check if the user exists in the database
         const findUser = await User.findOne({ email: data.email });
         if(findUser) return response.send("email already exist");
-        console.log(data)
 
         // send OTP to the user's email
-
+     
 
 
         // This saves a new user to the database if the email doesn't already exist

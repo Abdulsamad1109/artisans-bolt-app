@@ -5,9 +5,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
- export const userVerificaton = () =>{
+//  export const userVerificaton = () =>{
  
-    const transporter = nodemailer.createTransport({
+export    const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
         secure: false,
@@ -17,18 +17,5 @@ dotenv.config();
         },
     });
 
+// }
 
-    // async function main() {
-    //     // send mail with defined transport object
-    //     const info = await transporter.sendMail({
-    //       from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-    //       to: "bar@example.com, baz@example.com", // list of receivers
-    //       subject: "Hello ✔", // Subject line
-    //       text: "Hello world?", // plain text body
-    //       html: "<b>Hello world?</b>", // html body
-    //     });
-    
-    
-
-}
- 
