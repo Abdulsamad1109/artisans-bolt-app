@@ -17,7 +17,6 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
-        console.log(profile);
         
         let findUser;
         // find user by google ID

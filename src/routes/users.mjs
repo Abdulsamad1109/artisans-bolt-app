@@ -5,9 +5,9 @@ import { hashpassword } from "../utils/hashPassword.mjs";
 import passport from "passport";
 import { User } from "../models/users_schema.mjs";
 import { authenticateUser } from "../utils/userAuthentication.mjs";
-import nodemailer from "nodemailer"
-import {transporter} from "../utils/email-verification.mjs"
-import { generateOtp } from "../utils/generate-otp.mjs";
+import { sendOtp} from "./send-and-verify-OTP.mjs";
+import { Otp } from "../models/otp_schema.mjs";
+
 
 
 const router = Router();
@@ -28,13 +28,19 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
         if(findUser) return response.send("email already exist");
 
         // send OTP to the user's email
-     
+        const otpResult = await sendOtp({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            password: data.password,
+            session: request.session
+        });
+
+        if(!otpResult.success) return response.sendStatus(400);
+        response.status(200).send("OTP sent", otpResult.info);
 
 
-        // This saves a new user to the database if the email doesn't already exist
-        const newUser = new User(data);
-        const savedUser = await newUser.save();
-        return response.status(201).send(savedUser);
 
     } catch (error) {
         console.log("registration failed", error);
@@ -44,11 +50,44 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
 });
 
 
+// verify OTP
+router.post("/api/verify-otp", async (request, response) => {
+    const {otpFromUser} = request.body;
+    const email = request.session.email;
+    
+
+    if(!email) return response.status(400).send("email missing, re-register");
+    try {
+        let verifiedUser = await Otp.findOne({email, otp: otpFromUser});
+        if(!verifiedUser) return response.status(400).send("invalid OTP");
+
+        // save a new user to the database after verification
+        const newUser = new User({
+            firstName: verifiedUser.firstName,
+            lastName: verifiedUser.lastName,
+            email: verifiedUser.email,
+            phoneNumber: verifiedUser.phoneNumber,
+            passwod: verifiedUser.password
+        });
+        const savedUser = await newUser.save();
+        request.session.destroy()
+        response.status(200).send("OTP verified");
+        
+
+    } catch (error) {
+        console.log("email not verified", error);
+        return response.status(500).send("Server error verifying OTP");
+    }
+});
+
+
+
 // users login endpoint 
 router.post("/api/users/login", passport.authenticate('local'), (request, response) => {
 
     response.status(200).send("logged in sucessfully");
 });
+
 
 
 // users logout endpoint
@@ -66,6 +105,7 @@ router.get("/api/users/profile", authenticateUser, (request, response) => {
     response.status(200).send(request.user);
 
 });
+
 
 
 router.post('/api/users/update-profile', authenticateUser, async (request,response) => {
