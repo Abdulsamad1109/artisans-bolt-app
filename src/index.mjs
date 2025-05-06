@@ -33,7 +33,7 @@ mongoose.connect(uri)
             saveUninitialized: false,
             resave: false,
             cookie: {
-                maxAge : 60000 * 5
+                maxAge : 60000 * 10
             },
             store: MongoStore.create({
                 mongoUrl: uri

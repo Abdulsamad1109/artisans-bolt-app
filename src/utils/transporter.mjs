@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
-//  export const userVerificaton = () =>{
  
 export    const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -17,5 +16,5 @@ export    const transporter = nodemailer.createTransport({
         },
     });
 
-// }
+
 

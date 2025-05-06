@@ -5,15 +5,16 @@ import { hashpassword } from "../utils/hashPassword.mjs";
 import passport from "passport";
 import { User } from "../models/users_schema.mjs";
 import { authenticateUser } from "../utils/userAuthentication.mjs";
-import { sendOtp} from "./send-and-verify-OTP.mjs";
-import { Otp } from "../models/otp_schema.mjs";
+import { sendOtp, verifyOtpAndCreateNewUser} from "../utils/registrationOtpFunc.mjs";
+
+
 
 
 
 const router = Router();
 
 
-// registration endpoint for users
+// user registers and requests for OTP 
 router.post(("/api/users/register"), checkSchema(userValidationShema), async (request, response) => {
     try {
         // This validates the request body and saves the hashed password 
@@ -27,7 +28,7 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
         const findUser = await User.findOne({ email: data.email });
         if(findUser) return response.send("email already exist");
 
-        // send OTP to the user's email
+        // send OTP to the user's email and save userdata
         const otpResult = await sendOtp({
             firstName: data.firstName,
             lastName: data.lastName,
@@ -53,26 +54,12 @@ router.post(("/api/users/register"), checkSchema(userValidationShema), async (re
 // verify OTP
 router.post("/api/verify-otp", async (request, response) => {
     const {otpFromUser} = request.body;
-    const email = request.session.email;
     
-
-    if(!email) return response.status(400).send("email missing, re-register");
     try {
-        let verifiedUser = await Otp.findOne({email, otp: otpFromUser});
-        if(!verifiedUser) return response.status(400).send("invalid OTP");
 
-        // save a new user to the database after verification
-        const newUser = new User({
-            firstName: verifiedUser.firstName,
-            lastName: verifiedUser.lastName,
-            email: verifiedUser.email,
-            phoneNumber: verifiedUser.phoneNumber,
-            passwod: verifiedUser.password
-        });
-        const savedUser = await newUser.save();
+        await verifyOtpAndCreateNewUser(otpFromUser, request.session)
         request.session.destroy()
         response.status(200).send("OTP verified");
-        
 
     } catch (error) {
         console.log("email not verified", error);
