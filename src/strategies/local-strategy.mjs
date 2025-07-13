@@ -5,7 +5,7 @@ import { comparePassword } from "../utils/hashPassword.mjs";
 
 
 passport.serializeUser((user, done) => {
-    done(null, user.id)
+    done(null, user.id) // after serializing the user, it takes the ID as param to deserialize.
 })
 
 passport.deserializeUser( async (id, done) => {
@@ -14,6 +14,7 @@ passport.deserializeUser( async (id, done) => {
         const findUser = await User.findById(id)
         if(!findUser) throw new Error('user not found')
             done(null, findUser)
+        
     } catch (error) {
         done(error, null) 
     }
@@ -31,6 +32,7 @@ export default passport.use(
             if(!comparePassword(password, findUser.password))
               throw Error("invalid details")
             done(null, findUser)
+
         } catch (error) {
             done(error, null)
         }

@@ -1,4 +1,4 @@
-import express, { request, response } from "express";
+import express from "express";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
@@ -7,7 +7,7 @@ import allRoutes from './routes/index.mjs';
 import passport from "passport";
 import './strategies/local-strategy.mjs';
 import './strategies/google-strategy.mjs'
-import { generateOtp } from "./utils/generate-otp.mjs";
+
 
 const app = express();
 

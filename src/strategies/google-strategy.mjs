@@ -24,7 +24,8 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
         if(findUser)
             return done(null, findUser);
 
-        // find user by email
+        // if not found by ID, 
+        //  and find user by that email
         const emailFromGoogle = profile.emails[0].value;
         findUser = await User.findOne({ email: emailFromGoogle });
 
@@ -42,6 +43,7 @@ const google_client_secret = process.env.GOOGLE_CLIENT_SECRET;
             email: emailFromGoogle,
         });
 
+        // Save the new user and return them
         await newUser.save();
         return done(null, newUser);
 
