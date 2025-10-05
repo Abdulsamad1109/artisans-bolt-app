@@ -13,7 +13,6 @@ router.post("/api/booking", authenticateUser, async (request, response) => {
         let {service, user, address, summary, price, date, time, status} = request.body
         user = request.user.id
 
-    
         // checking if the service is available 
         let findService = await Service.findOne({ type: service });
         if(!findService) return response.status(404).send("service not available");
